@@ -12,7 +12,7 @@ const App: React.FC = () => {
   const isAuthenticated = useAuthStore((s: any) => s.isAuthenticated);
   const isDarkMode = useThemeStore((s) => s.isDarkMode);
   const toggleTheme = useThemeStore((s) => s.toggleTheme);
-  const useTranslationResponse = useTranslation();
+  
   
 
   return (

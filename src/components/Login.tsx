@@ -4,14 +4,14 @@ import { FaLinkedin, FaGithub, FaGlobe, FaWhatsapp } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { signInWithPopup, signOut, auth, provider } from '../firebase';
 import { useAuthStore } from '../store/authStore';
-import { useThemeStore } from '../store/themeStore';
+
 
 import Toast from './Toast';
 
 const Login: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const setAuthenticated = useAuthStore((s: any) => s.setAuthenticated);
-    const useThemeStoreResponse = useThemeStore();
+    
     const { t } = useTranslation();
     const patientName = import.meta.env.VITE_PATIENT_NAME || 'Osvaldo';
 
@@ -75,16 +75,16 @@ const Login: React.FC = () => {
                     </div>
 
                     <div className="flex justify-center gap-6">
-                        <a href="https://www.linkedin.com/in/rigoberto-martinez/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-300 hover-lift">
+                        <a href="https://www.linkedin.com/in/rigoberto-martinez/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                             <FaLinkedin size={24} />
                         </a>
-                        <a href="https://github.com/rigobersio" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-300 hover-lift">
+                        <a href="https://github.com/rigobersio" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                             <FaGithub size={24} />
                         </a>
-                        <a href="https://porfolio-rigoberto.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400 transition-colors duration-300 hover-lift">
+                        <a href="https://porfolio-rigoberto.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                             <FaGlobe size={24} />
                         </a>
-                        <a href="https://w.app/py1fdb" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-green-500 dark:text-gray-400 dark:hover:text-green-500 transition-colors duration-300 hover-lift">
+                        <a href="https://w.app/py1fdb" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-green-500 dark:text-gray-400 dark:hover:text-green-500 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                             <FaWhatsapp size={24} />
                         </a>
                     </div>
