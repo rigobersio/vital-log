@@ -1,0 +1,20 @@
+{
+    "welcome": "Welcome to Vital Log",
+    "developedBy": "Developed by Rigoberto",
+    "continueWithGoogle": "Continue with Google",
+    "loginError": "Login error",
+    "controlPanel": "Control Panel",
+    "logout": "Logout",
+    "vitalStats": "Vital Stats",
+    "whatsapp": {
+        "title": "Get link via WhatsApp",
+        "phoneLabel": "Your WhatsApp number",
+        "phonePlaceholder": "Ex: +56912345678",
+        "sendButton": "Send message",
+        "testMessage": "Hello world"
+    },
+    "theme": {
+        "lightMode": "Light mode",
+        "darkMode": "Dark mode"
+    }
+}
