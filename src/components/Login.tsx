@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { signInWithPopup, auth, provider } from '../firebase';
 import { useAuthStore } from '../store/authStore';
 import { useThemeStore } from '../store/themeStore';
@@ -6,13 +7,15 @@ import { useThemeStore } from '../store/themeStore';
 const Login: React.FC = () => {
     const setAuthenticated = useAuthStore((s: any) => s.setAuthenticated);
     const isDarkMode = useThemeStore((s) => s.isDarkMode);
+    const { t } = useTranslation();
+    const patientName = import.meta.env.VITE_PATIENT_NAME;
 
     const handleLogin = async () => {
         try {
             await signInWithPopup(auth, provider);
             setAuthenticated(true);
         } catch (error) {
-            alert('Error al iniciar sesión');
+            alert(t('loginError'));
         }
     };
 
@@ -26,10 +29,13 @@ const Login: React.FC = () => {
                         className="mx-auto h-32 w-32 rounded-full border-4 border-blue-500 shadow-lg mb-4"
                     />
                     <h2 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                        Bienvenido a Vital Log
+                        {t('welcome')}
                     </h2>
-                    <p className={`mt-2 text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                        Desarrollado por Rigoberto
+                    <p className={`mt-2 text-base ${isDarkMode ? 'text-gray-300' : 'text-gray-600'} max-w-md mx-auto`}>
+                        {t('patientInfo', { name: patientName })}
+                    </p>
+                    <p className={`mt-4 text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                        {t('developedBy')}
                     </p>
                     <div className="flex justify-center gap-4 mt-4">
                         <a href="https://www.linkedin.com/in/rigoberto-martinez/" target="_blank" rel="noopener noreferrer"
@@ -76,7 +82,7 @@ const Login: React.FC = () => {
                             fill="#EA4335"
                         />
                     </svg>
-                    Continuar con Google
+                    {t('continueWithGoogle')}
                 </button>
             </div>
         </div>

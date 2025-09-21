@@ -1,0 +1,31 @@
+{
+    "welcome": "Bienvenido a Vital Log",
+    "developedBy": "Desarrollado por Rigoberto",
+    "continueWithGoogle": "Continuar con Google",
+    "loginError": "Error al iniciar sesión",
+    "controlPanel": "Panel de Control",
+    "logout": "Cerrar sesión",
+    "vitalStats": "Constantes Vitales",
+    "downloadPDF": "Descargar PDF",
+    "theme": {
+        "lightMode": "Modo claro",
+        "darkMode": "Modo oscuro"
+    }
+}Bienvenido a Vital Log","developedBy": "Desarrollado por Rigoberto",
+"continueWithGoogle": "Continuar con Google",
+"loginError": "Error al iniciar sesión",
+"controlPanel": "Panel de Control",
+"logout": "Cerrar sesión",
+"vitalStats": "Constantes Vitales",
+"whatsapp": {
+    "title": "Recibir enlace por WhatsApp",
+    "phoneLabel": "Tu número de WhatsApp",
+    "phonePlaceholder": "Ej: +56912345678",
+    "sendButton": "Enviar mensaje",
+    "testMessage": "Hola mundo"
+},
+"theme": {
+    "lightMode": "Modo claro",
+    "darkMode": "Modo oscuro"
+}
+}

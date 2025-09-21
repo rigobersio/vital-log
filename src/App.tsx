@@ -1,13 +1,16 @@
 import './index.css';
 import { useAuthStore } from './store/authStore';
 import { useThemeStore } from './store/themeStore';
+import { useTranslation } from 'react-i18next';
 import Login from './components/Login';
 import ProtectedView from './components/ProtectedView';
+import LanguageSelector from './components/LanguageSelector';
 
 const App = () => {
   const isAuthenticated = useAuthStore((s: any) => s.isAuthenticated);
   const isDarkMode = useThemeStore((s) => s.isDarkMode);
   const toggleTheme = useThemeStore((s) => s.toggleTheme);
+  const { t } = useTranslation();
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
@@ -16,11 +19,14 @@ const App = () => {
           <h1 className={`text-2xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
             Vital Log
           </h1>
+          <div className="flex items-center gap-4">
+            <LanguageSelector />
+          </div>
           <button
             onClick={toggleTheme}
             className={`p-2 rounded-lg ${isDarkMode
-                ? 'bg-gray-700 hover:bg-gray-600'
-                : 'bg-gray-100 hover:bg-gray-200'
+              ? 'bg-gray-700 hover:bg-gray-600'
+              : 'bg-gray-100 hover:bg-gray-200'
               } transition-colors duration-200`}
           >
             {isDarkMode ? (
