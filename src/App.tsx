@@ -1,7 +1,7 @@
 import './index.css';
 import { useAuthStore } from './store/authStore';
 import { useThemeStore } from './store/themeStore';
-import { useTranslation } from 'react-i18next';
+
 import Login from './components/Login';
 import ProtectedView from './components/ProtectedView';
 import LanguageSelector from './components/LanguageSelector';
@@ -10,7 +10,7 @@ const App = () => {
   const isAuthenticated = useAuthStore((s: any) => s.isAuthenticated);
   const isDarkMode = useThemeStore((s) => s.isDarkMode);
   const toggleTheme = useThemeStore((s) => s.toggleTheme);
-  const { t } = useTranslation();
+  
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>

@@ -4,13 +4,12 @@ import { FaLinkedin, FaGithub, FaGlobe, FaWhatsapp } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { signInWithPopup, signOut, auth, provider } from '../firebase';
 import { useAuthStore } from '../store/authStore';
-import { useThemeStore } from '../store/themeStore';
+
 import Toast from './Toast';
 
 const Login: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const setAuthenticated = useAuthStore((s: any) => s.setAuthenticated);
-    const isDarkMode = useThemeStore((s) => s.isDarkMode);
     const { t } = useTranslation();
     const patientName = import.meta.env.VITE_PATIENT_NAME || 'Osvaldo';
 
