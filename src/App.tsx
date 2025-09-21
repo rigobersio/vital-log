@@ -2,6 +2,8 @@ import './index.css';
 import { useAuthStore } from './store/authStore';
 import { useThemeStore } from './store/themeStore';
 
+import { useTranslation } from 'react-i18next';
+
 import Login from './components/Login';
 import ProtectedView from './components/ProtectedView';
 import LanguageSelector from './components/LanguageSelector';
@@ -10,6 +12,8 @@ const App = () => {
   const isAuthenticated = useAuthStore((s: any) => s.isAuthenticated);
   const isDarkMode = useThemeStore((s) => s.isDarkMode);
   const toggleTheme = useThemeStore((s) => s.toggleTheme);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { t } = useTranslation();
   
 
   return (
