@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n-key="page_title">Rigobersio Markdown</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --sidebar-width: 300px;
+            --header-height: 56px;
+            --primary-glow: 0 0 15px rgba(13, 110, 253, 0.5);
+        }
+        body { transition: background-color 0.2s ease-in-out; }
+        #main-view { display: flex; height: 100vh; overflow: hidden; }
+        #sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid var(--bs-border-color);
+            background-color: var(--bs-body-bg);
+            transition: width 0.3s ease, transform 0.3s ease;
+            padding-top: var(--header-height);
+            display: flex;
+            flex-direction: column;
+        }
+        #file-list-wrapper { flex-grow: 1; overflow-y: auto; }
+        #sidebar-footer { padding: 1rem; border-top: 1px solid var(--bs-border-color); }
+        #content-area { flex-grow: 1; height: 100vh; overflow-y: auto; padding-top: var(--header-height); }
+        #content-display { padding: 2rem; }
+        #header {
+            position: fixed; top: 0; left: 0; right: 0;
+            height: var(--header-height);
+            display: flex; align-items: center; padding: 0 1rem;
+            border-bottom: 1px solid var(--bs-border-color);
+            background-color: var(--bs-tertiary-bg);
+            z-index: 1030;
+        }
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            overflow: hidden;
+        }
+        .header-brand img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .header-brand .title {
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        #welcome-screen {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            height: 100vh; text-align: center; padding: 1rem;
+            background-color: var(--bs-body-bg);
+            color: var(--bs-body-color);
+            position: relative;
+            overflow: hidden;
+        }
+        #star-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        .welcome-content { position: relative; z-index: 1; }
+        .profile-pic {
+            width: 150px; height: 150px; border-radius: 50%; object-fit: cover;
+            border: 4px solid var(--bs-primary);
+            box-shadow: var(--primary-glow);
+        }
+        .social-links a { font-size: 1.5rem; transition: transform 0.2s, color 0.2s; display: inline-block; color: var(--bs-secondary-color); }
+        .social-links a:hover { transform: scale(1.2); color: var(--bs-primary); }
+        #typing-effect {
+            font-family: monospace;
+            border-right: .15em solid orange;
+            white-space: nowrap;
+            overflow: hidden;
+            letter-spacing: .15em;
+            min-height: 1.2em;
+            color: var(--bs-warning);
+        }
+        .main-button {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 -2px 0 rgba(0,0,0,0.2);
+            transition: all 0.2s ease-in-out;
+            border: none;
+        }
+        .main-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3), inset 0 -2px 0 rgba(0,0,0,0.2); }
+        .top-right-controls { position: absolute; top: 1rem; right: 1rem; z-index: 2; }
+        .file-tree ul { padding-left: 1.2rem; }
+        .file-tree li { list-style: none; }
+        .file-item, .dir-item { cursor: pointer; padding: 0.25rem 0.5rem; border-radius: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .file-item:hover { background-color: var(--bs-secondary-bg); }
+        .dir-item { font-weight: bold; }
+        .file-item.active { background-color: var(--bs-primary); color: var(--bs-light); }
+        body.sidebar-collapsed #sidebar { width: 0; transform: translateX(calc(-1 * var(--sidebar-width))); }
+        @media (max-width: 768px) {
+            body:not(.sidebar-collapsed) #sidebar { position: absolute; z-index: 1020; box-shadow: 0 0 15px rgba(0,0,0,0.25); }
+            body.sidebar-collapsed #sidebar { transform: translateX(calc(-1 * var(--sidebar-width))); }
+            #content-display { padding: 1rem; }
+            .header-brand .title { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="welcome-screen">
+        <canvas id="star-canvas"></canvas>
+        <div class="top-right-controls">
+            <button id="lang-toggle-btn-welcome" class="btn btn-outline-secondary me-2" style="width: 50px;"></button>
+            <button id="theme-toggle-btn-welcome" class="btn btn-outline-secondary"><i id="theme-icon-welcome" class="bi"></i></button>
+        </div>
+        <div class="welcome-content">
+            <img src="https://res.cloudinary.com/dqh2illb5/image/upload/v1715016763/myPerfil/1710771555673_Git-Hub_unujoi.jpg" alt="Profile Picture" class="profile-pic mb-3">
+            <h1 class="mb-2 display-5" data-i18n-key="welcome_greeting">Rigobersio Markdown</h1>
+            <p id="typing-effect"></p>
+            <button id="select-dir-btn" class="btn btn-primary btn-lg mt-3 main-button" data-i18n-key="select_folder_btn">Seleccionar Carpeta de Documentos</button>
+            <p class="text-muted mt-2" style="font-size: 0.9rem;" data-i18n-key="welcome_instruction">Es necesario seleccionar la carpeta donde están los archivos .md</p>
+            <div class="social-links mt-4">
+                <a href="https://www.linkedin.com/in/rigoberto-martinez/" target="_blank" class="mx-2" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                <a href="https://github.com/rigobersio" target="_blank" class="mx-2" title="GitHub"><i class="bi bi-github"></i></a>
+                <a href="https://porfolio-rigoberto.vercel.app/" target="_blank" class="mx-2" title="Portfolio"><i class="bi bi-globe"></i></a>
+                <a href="https://w.app/py1fdb" target="_blank" class="mx-2" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+            </div>
+            <div id="api-support-warning" class="alert alert-danger mt-4" style="display: none;" data-i18n-key="api_warning">
+                <strong>Atención:</strong> Su navegador no es compatible. Por favor, utilice una versión reciente de Chrome, Edge u Opera.
+            </div>
+        </div>
+    </div>
+
+    <div id="main-view" style="display: none;">
+        <div id="header">
+            <button id="sidebar-toggle-btn" class="btn btn-light me-3"><i class="bi bi-list"></i></button>
+            <div class="header-brand">
+                <img src="https://res.cloudinary.com/dqh2illb5/image/upload/v1715016763/myPerfil/1710771555673_Git-Hub_unujoi.jpg" alt="Profile Thumbnail">
+                <span class="title">Rigobersio Markdown</span>
+            </div>
+            <span class="text-muted mx-2">/</span>
+            <h5 id="folder-name" class="my-0 text-truncate"></h5>
+            <div class="ms-auto d-flex align-items-center">
+                <button id="lang-toggle-btn-main" class="btn btn-light me-2" style="width: 50px;"></button>
+                <button id="theme-toggle-btn-main" class="btn btn-light"><i id="theme-icon-main" class="bi"></i></button>
+            </div>
+        </div>
+        <div id="sidebar">
+            <div id="file-list-wrapper" class="p-2 file-tree"></div>
+            <div id="sidebar-footer">
+                <div class="social-links text-center">
+                    <a href="https://www.linkedin.com/in/rigoberto-martinez/" target="_blank" class="mx-2" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="https://github.com/rigobersio" target="_blank" class="mx-2" title="GitHub"><i class="bi bi-github"></i></a>
+                    <a href="https://porfolio-rigoberto.vercel.app/" target="_blank" class="mx-2" title="Portfolio"><i class="bi bi-globe"></i></a>
+                    <a href="https://w.app/py1fdb" target="_blank" class="mx-2" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div id="content-area">
+            <div id="content-display">
+                <h2 data-i18n-key="select_file_title">Seleccione un archivo</h2>
+                <p data-i18n-key="select_file_text">Haga clic en un archivo de la lista de la izquierda para ver su contenido aquí.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // DOM Elements
+        const selectDirBtn = document.getElementById('select-dir-btn');
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const mainView = document.getElementById('main-view');
+        const fileListDiv = document.getElementById('file-list-wrapper');
+        const contentDisplay = document.getElementById('content-display');
+        const folderNameH5 = document.getElementById('folder-name');
+        const apiWarning = document.getElementById('api-support-warning');
+        const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+        const htmlElement = document.documentElement;
+
+        // Controls (duplicated for both views)
+        const langToggles = [document.getElementById('lang-toggle-btn-welcome'), document.getElementById('lang-toggle-btn-main')];
+        const themeToggles = [document.getElementById('theme-toggle-btn-welcome'), document.getElementById('theme-toggle-btn-main')];
+        const themeIcons = [document.getElementById('theme-icon-welcome'), document.getElementById('theme-icon-main')];
+
+        let directoryHandle = null;
+
+        // --- TRANSLATION (i18n) LOGIC ---
+        const translations = {
+            en: {
+                page_title: "Rigobersio Markdown",
+                welcome_greeting: "Rigobersio Markdown",
+                select_folder_btn: "Select Documents Folder",
+                welcome_instruction: "It is necessary to select the folder where the .md files are located",
+                api_warning: "<strong>Warning:</strong> Your browser is not supported. Please use a recent version of Chrome, Edge, or Opera.",
+                select_file_title: "Select a file",
+                select_file_text: "Click a file from the list on the left to view its content here."
+            },
+            es: {
+                page_title: "Rigobersio Markdown",
+                welcome_greeting: "Rigobersio Markdown",
+                select_folder_btn: "Seleccionar Carpeta de Documentos",
+                welcome_instruction: "Es necesario seleccionar la carpeta donde están los archivos .md",
+                api_warning: "<strong>Atención:</strong> Su navegador no es compatible. Por favor, utilice una versión reciente de Chrome, Edge u Opera.",
+                select_file_title: "Seleccione un archivo",
+                select_file_text: "Haga clic en un archivo de la lista de la izquierda para ver su contenido aquí."
+            }
+        };
+
+        const getPreferredLanguage = () => localStorage.getItem('language') || 'es';
+        
+        const setLanguage = (lang) => {
+            localStorage.setItem('language', lang);
+            htmlElement.setAttribute('lang', lang);
+            document.querySelectorAll('[data-i18n-key]').forEach(el => {
+                const key = el.getAttribute('data-i18n-key');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+            langToggles.forEach(btn => { if(btn) btn.textContent = lang.toUpperCase(); });
+        };
+
+        langToggles.forEach(btn => { if(btn) btn.addEventListener('click', () => {
+            const newLang = htmlElement.getAttribute('lang') === 'es' ? 'en' : 'es';
+            setLanguage(newLang);
+        })});
+
+        // --- THEME LOGIC ---
+        const getPreferredTheme = () => localStorage.getItem('theme') || 'dark';
+
+        const setTheme = (theme) => {
+            htmlElement.setAttribute('data-bs-theme', theme);
+            themeIcons.forEach(icon => { if(icon) icon.className = theme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill'; });
+            localStorage.setItem('theme', theme);
+        };
+
+        themeToggles.forEach(btn => { if(btn) btn.addEventListener('click', () => {
+            const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        })});
+
+        // --- SIDEBAR TOGGLE LOGIC ---
+        sidebarToggleBtn.addEventListener('click', () => document.body.classList.toggle('sidebar-collapsed'));
+
+        // --- FILE SYSTEM API LOGIC ---
+        if (!window.showDirectoryPicker) {
+            apiWarning.style.display = 'block';
+            selectDirBtn.disabled = true;
+        } else {
+            selectDirBtn.addEventListener('click', async () => {
+                try {
+                    directoryHandle = await window.showDirectoryPicker();
+                    if (directoryHandle) {
+                        if (window.innerWidth <= 768) document.body.classList.add('sidebar-collapsed');
+                        welcomeScreen.style.display = 'none';
+                        mainView.style.display = 'flex';
+                        folderNameH5.textContent = directoryHandle.name;
+                        const fileTree = await processDirectory(directoryHandle);
+                        renderFileTree(fileTree, fileListDiv);
+                    }
+                } catch (err) {
+                    if (err.name !== 'AbortError') console.error("Error selecting directory:", err);
+                }
+            });
+        }
+
+        async function processDirectory(dirHandle) {
+            const tree = { name: dirHandle.name, type: 'directory', children: [] };
+            for await (const entry of dirHandle.values()) {
+                if (entry.kind === 'file' && entry.name.endsWith('.md')) {
+                    tree.children.push({ name: entry.name, type: 'file', handle: entry });
+                } else if (entry.kind === 'directory') {
+                    const subTree = await processDirectory(entry);
+                    if (subTree.children.length > 0) tree.children.push(subTree);
+                }
+            }
+            return tree;
+        }
+
+        function renderFileTree(tree, container) {
+            container.innerHTML = '';
+            const ul = document.createElement('ul');
+            ul.className = 'list-unstyled p-2';
+            tree.children.sort((a, b) => a.type === 'directory' ? -1 : b.type === 'directory' ? 1 : a.name.localeCompare(b.name));
+            for (const item of tree.children) {
+                const li = document.createElement('li');
+                if (item.type === 'directory') {
+                    li.innerHTML = `<span class="dir-item">${item.name}</span>`;
+                    const subContainer = document.createElement('div');
+                    li.appendChild(subContainer);
+                    renderFileTree(item, subContainer);
+                } else {
+                    const fileName = item.name.replace(/\.md$/, '');
+                    li.innerHTML = `<span class="file-item" title="${item.name}">${fileName}</span>`;
+                    li.querySelector('.file-item').addEventListener('click', (e) => {
+                        document.querySelectorAll('.file-item').forEach(el => el.classList.remove('active'));
+                        e.target.classList.add('active');
+                        displayFileContent(item.handle);
+                        if (window.innerWidth <= 768) document.body.classList.add('sidebar-collapsed');
+                    });
+                }
+                ul.appendChild(li);
+            }
+            container.appendChild(ul);
+        }
+
+        async function displayFileContent(fileHandle) {
+            try {
+                const file = await fileHandle.getFile();
+                const content = await file.text();
+                contentDisplay.innerHTML = marked.parse(content);
+            } catch (err) {
+                console.error("Error reading file:", err);
+                contentDisplay.innerHTML = `<div class="alert alert-danger">Error al leer el archivo: ${err.message}</div>`;
+            }
+        }
+
+        // --- AESTHETIC SCRIPTS ---
+        const typingElement = document.getElementById('typing-effect');
+        const phrases = ["// Building responsive layouts...", "SELECT * FROM documents;", "git commit -m \"Final touches\"", "npm install innovation", "Executing deployment script...", "console.log(\"Hello, World!\");"];
+        let phraseIndex = 0; let charIndex = 0; let isDeleting = false;
+        function type() {
+            const currentPhrase = phrases[phraseIndex];
+            let displayText = '';
+            if (isDeleting) {
+                displayText = currentPhrase.substring(0, charIndex--);
+            } else {
+                displayText = currentPhrase.substring(0, charIndex++);
+            }
+            typingElement.textContent = displayText;
+            let typeSpeed = isDeleting ? 50 : 150;
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                typeSpeed = 2000; isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length;
+            }
+            setTimeout(type, typeSpeed);
+        }
+
+        const canvas = document.getElementById('star-canvas');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        let stars = [];
+        function initStars() {
+            stars = [];
+            for(let i = 0; i < 150; i++) {
+                stars.push({ x: Math.random(), y: Math.random(), z: Math.random() });
+            }
+        }
+        function drawStars() {
+            if(canvas.width !== window.innerWidth || canvas.height !== window.innerHeight) resizeCanvas();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const theme = htmlElement.getAttribute('data-bs-theme');
+            if(theme === 'dark') {
+                ctx.fillStyle = 'white';
+                for(let star of stars) {
+                    star.z -= 0.005;
+                    if(star.z <= 0) { star.x = Math.random(); star.y = Math.random(); star.z = Math.random(); }
+                    let x = star.x * canvas.width; let y = star.y * canvas.height;
+                    let radius = (1 - star.z) * 2;
+                    ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+            requestAnimationFrame(drawStars);
+        }
+
+        // --- INITIALIZATION ---
+        setLanguage(getPreferredLanguage());
+        setTheme(getPreferredTheme());
+        if (window.showDirectoryPicker) {
+            type();
+            initStars();
+            drawStars();
+        }
+
+    </script>
+</body>
+</html>
