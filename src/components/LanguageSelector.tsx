@@ -9,18 +9,24 @@ const LanguageSelector: React.FC = () => {
     };
 
     return (
-        <div className="flex gap-2">
+        <div className="flex gap-3">
             <button
                 onClick={() => changeLanguage('es')}
-                className={`px-2 py-1 rounded ${i18n.language === 'es' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}
+                className={`px-3 py-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-md 
+                    ${i18n.language === 'es'
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+                        : 'bg-gray-200 dark:bg-gray-700/50 backdrop-blur-sm hover:bg-gray-300 dark:hover:bg-gray-600/50'}`}
             >
-                ES
+                🇪🇸 ES
             </button>
             <button
                 onClick={() => changeLanguage('en')}
-                className={`px-2 py-1 rounded ${i18n.language === 'en' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}
+                className={`px-3 py-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-md 
+                    ${i18n.language === 'en'
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+                        : 'bg-gray-200 dark:bg-gray-700/50 backdrop-blur-sm hover:bg-gray-300 dark:hover:bg-gray-600/50'}`}
             >
-                EN
+                🇬🇧 EN
             </button>
         </div>
     );

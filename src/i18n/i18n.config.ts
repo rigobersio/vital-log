@@ -1,41 +1,15 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import en from './en.json';
+import es from './es.json';
 
 const resources = {
     es: {
-        translation: {
-            welcome: "Bienvenido a Vital Log",
-            developedBy: "Desarrollado por Rigoberto",
-            continueWithGoogle: "Continuar con Google",
-            loginError: "Error al iniciar sesión",
-            controlPanel: "Panel de Control",
-            logout: "Cerrar sesión",
-            vitalStats: "Constantes Vitales",
-            downloadPDF: "Descargar PDF",
-            patientInfo: "Sistema de registro diario de constantes vitales e información médicamente relevante de {{name}}",
-            theme: {
-                lightMode: "Modo claro",
-                darkMode: "Modo oscuro"
-            }
-        }
+        translation: es
     },
     en: {
-        translation: {
-            welcome: "Welcome to Vital Log",
-            developedBy: "Developed by Rigoberto",
-            continueWithGoogle: "Continue with Google",
-            loginError: "Login error",
-            controlPanel: "Control Panel",
-            logout: "Logout",
-            vitalStats: "Vital Stats",
-            downloadPDF: "Download PDF",
-            patientInfo: "Daily monitoring system for vital signs and medically relevant information of {{name}}",
-            theme: {
-                lightMode: "Light mode",
-                darkMode: "Dark mode"
-            }
-        }
+        translation: en
     }
 };
 

@@ -73,11 +73,15 @@ VITE_FIREBASE_PROJECT_ID=tu_project_id
 VITE_FIREBASE_APP_ID=tu_app_id
 
 # Google Sheets
-VITE_GOOGLE_SHEET_URL=url_de_tu_planilla
-VITE_GOOGLE_SHEET_PDF_URL=url_de_descarga_pdf
+VITE_GOOGLE_SHEET_URL=url_de_tu_planilla_google_sheets
+VITE_GOOGLE_SHEET_PDF_URL=url_de_descarga_pdf_google_sheets
+VITE_GOOGLE_SHEET_EDIT_URL=url_de_edicion_de_tu_planilla_google_sheets
 
 # Patient Info
 VITE_PATIENT_NAME=nombre_del_paciente
+
+# Security
+VITE_SECURITY_KEY=tu_clave_de_seguridad
 ```
 
 ## Acerca del Desarrollador / About the Developer
