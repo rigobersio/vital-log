@@ -11,8 +11,7 @@ import Toast from './Toast';
 const Login: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const setAuthenticated = useAuthStore((s: any) => s.setAuthenticated);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const isDarkMode = useThemeStore((s) => s.isDarkMode);
+    const useThemeStoreResponse = useThemeStore();
     const { t } = useTranslation();
     const patientName = import.meta.env.VITE_PATIENT_NAME || 'Osvaldo';
 

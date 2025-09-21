@@ -8,12 +8,11 @@ import Login from './components/Login';
 import ProtectedView from './components/ProtectedView';
 import LanguageSelector from './components/LanguageSelector';
 
-const App = () => {
+const App: React.FC = () => {
   const isAuthenticated = useAuthStore((s: any) => s.isAuthenticated);
   const isDarkMode = useThemeStore((s) => s.isDarkMode);
   const toggleTheme = useThemeStore((s) => s.toggleTheme);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { t } = useTranslation();
+  const useTranslationResponse = useTranslation();
   
 
   return (
